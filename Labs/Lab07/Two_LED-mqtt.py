@@ -1,4 +1,17 @@
-# CS300 MQTT Lab 
+###########################################################
+# Author: Derek Schuurman
+# Edited by: Zach Chin
+# Date: 04/01/2020
+# Assignment: CS 300 Lab 07
+# Class: LED-mqtt.py
+# 
+# Description: 
+#   Waits for a message from mqtt-button.py to turn two
+#   LEDs on and off. Each button on mqtt-button.py controls
+#   one of the two LEDs from this class. Connects to an
+#   MQTT broker to receive the messages.
+###########################################################
+
 import RPi.GPIO as GPIO  
 import paho.mqtt.client as mqtt
 import time
@@ -26,7 +39,11 @@ def on_connect(client, userdata, rc, *extra_params):
 # Callback when client receives a message from the broker 
 # Use button message to turn LED on/off 
 def on_message(client, data, msg):  
+    # Decodes the message received from the broker to a string
     str_message = str(msg.payload.decode("utf-8"))
+    
+    # If statements to determine which message has been received in order
+    #   to activate the correct LED
     if msg.topic == "zc26/button" and  str_message == MESSAGE1:             
         if GPIO.input(LED1) == 1:          
             GPIO.output(LED1, 0)       
